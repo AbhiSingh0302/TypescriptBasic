@@ -4,8 +4,9 @@ const buttonEl = document.querySelector("button")!;
 
 const numResults: number[] = [];
 const stringResult: string[] = [];
+type NumOrString = number | string;  // it is called type alias used to create your own type
 
-function add(num1: number | string, num2: number | string){  // union types allowed us to accept more than one type of types
+function add(num1: NumOrString, num2: NumOrString){
     if(typeof num1 === "number" && typeof num2 === "number"){
         return num1 + num2;
     }else if(typeof num1 === "string" && typeof num2 === "string"){
