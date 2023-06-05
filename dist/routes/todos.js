@@ -8,12 +8,13 @@ router.get('/', (req, res, next) => {
 });
 router.post('/todo', (req, res, next) => {
     try {
-        if (!req.body.text) {
+        const Body = req.body;
+        if (!Body.text) {
             throw new Error('text is not found');
         }
         const newTodo = {
             id: new Date().toISOString(),
-            text: req.body.text
+            text: Body.text
         };
         todos.push(newTodo);
         return res.status(201).json({
@@ -28,11 +29,12 @@ router.post('/todo', (req, res, next) => {
 });
 router.post('/delete', (req, res, next) => {
     try {
-        if (!req.body.id) {
+        const todoId = req.body;
+        if (!todoId.id) {
             throw new Error('id not found');
         }
         const removedInd = todos.findIndex((val) => {
-            return val.id === req.body.id;
+            return val.id === todoId.id;
         });
         todos.splice(removedInd, 1);
         return res.status(201).json({
@@ -49,18 +51,20 @@ router.post('/delete', (req, res, next) => {
 });
 router.post('/edit', (req, res, next) => {
     try {
+        const todoId = req.body;
+        const Body = req.body;
         console.log("Edit");
-        console.log(req.body.id, " ", req.body.newtext);
-        if (!(req.body.id && req.body.newtext)) {
+        console.log(todoId.id, " ", Body.newtext);
+        if (!(todoId.id && Body.newtext)) {
             throw new Error('Not found');
         }
         const removedInd = todos.findIndex((val) => {
-            return val.id === req.body.id;
+            return val.id === todoId.id;
         });
         console.log(removedInd);
         todos.forEach((val, ind) => {
             if (ind === removedInd) {
-                todos[ind].text = req.body.newtext;
+                todos[ind].text = Body.newtext;
             }
         });
         return res.status(201).json({
